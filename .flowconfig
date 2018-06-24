@@ -1,0 +1,18 @@
+[ignore]
+.*/node_modules/babel*
+.*/node_modules/tap/*
+.*/node_modules/documentation/*
+.*/node_modules/browserify*
+.*/node_modules/is-*
+.*/node_modules/*
+!.*/node_modules/blue-tape
+!.*/node_modules/random-access-storage
+
+[libs]
+
+[include]
+
+[options]
+module.name_mapper='random-access-idb-mutable-file' -> '<PROJECT_ROOT>/src/random-access-idb-mutable-file'
+suppress_comment= \\(.\\|\n\\)*\\@FlowIssue
+suppress_comment= \\(.\\|\n\\)*\\@FlowIgnore
