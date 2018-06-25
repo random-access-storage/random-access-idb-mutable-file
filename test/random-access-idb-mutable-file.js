@@ -1,8 +1,19 @@
 /* @flow */
 
-import * as RandomAccessStore from "../"
+import RandomAccess from "../"
 import test from "blue-tape"
 
-test("test baisc", async test => {
-  test.isEqual(typeof RandomAccessStore, "object")
+test("test API", async test => {
+  test.ok(isClass(RandomAccess), "default export is a class")
+  test.ok(isFunction(RandomAccess.mount), ".mount is a function")
 })
+
+const isFunction = value => typeof value === "function"
+
+const isClass = (value /*: any*/) => {
+  return (
+    typeof value === "function" &&
+    typeof value.prototype === "object" &&
+    value.prototype.constructor === value
+  )
+}

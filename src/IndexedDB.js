@@ -29,6 +29,12 @@ export interface IDBOpenDBRequest extends IDBRequest<Error, IDBDatabase> {
   onupgradeneeded: (e: any) => mixed;
 }
 
+export interface DOMStringList {
+  +length: number;
+  item(): string;
+  contains(string): boolean;
+}
+
 export interface IDBDatabase extends EventTarget {
   close(): void;
   createObjectStore(
@@ -49,7 +55,7 @@ export interface IDBDatabase extends EventTarget {
   ): IDBTransaction;
   name: string;
   version: number;
-  objectStoreNames: string[];
+  objectStoreNames: DOMStringList;
   onabort: (e: any) => mixed;
   onclose: (e: any) => mixed;
   onerror: (e: any) => mixed;
@@ -173,4 +179,4 @@ export interface IDBFileHandle extends EventTarget {
 
 export type LockedFile = IDBFileHandle
 
-export const indexedDB: IDBFactory = self.indexedDB
+export const indexedDB: IDBFactory = window.indexedDB

@@ -33,13 +33,13 @@ class RandomAccessIDBFileVolume {
   name: string
   version: number
   storeName: string
-  options: MountOptions
+  options: VolumeOptions
   constructor(
     db: IDBDatabase,
     name: string,
     version: number,
     storeName: string,
-    options: MountOptions
+    options: VolumeOptions
   ) {
     this.db = db
     this.name = name
@@ -73,16 +73,23 @@ class RandomAccessIDBFileVolume {
     }
   }
 
-  mount(file, options) {
+  mount(file: string, options?: FileOptions) {
     return new RandomAccessProvider(this, `/${file}`, options)
   }
 }
 
-interface MountOptions {
+interface VolumeOptions {
   debug?: boolean;
   name?: string;
   version?: number;
   storeName?: string;
+}
+
+interface FileOptions {
+  truncate?: boolean;
+  size?: number;
+  readable?: boolean;
+  writable?: boolean;
 }
 
 interface Size {
@@ -98,9 +105,9 @@ class RandomAccessProvider extends RandomAccess {
   mode: "readonly" | "readwrite"
   workQueue: Request[]
   isIdle: boolean
-  options: MountOptions
+  options: FileOptions
 
-  static async mount(options /*:MountOptions*/ = {}) {
+  static async mount(options?: VolumeOptions = {}) {
     if (!self.IDBMutableFile) {
       throw Error(
         `Runtime does not supports IDBMutableFile https://developer.mozilla.org/en-US/docs/Web/API/IDBMutableFile`
@@ -113,7 +120,7 @@ class RandomAccessProvider extends RandomAccess {
       const request = indexedDB.open(name, version)
       request.onupgradeneeded = () => {
         const db = request.result
-        if (!db.objectStoreNames.includes(storeName)) {
+        if (!db.objectStoreNames.contains(storeName)) {
           db.createObjectStore(storeName)
         }
       }
@@ -125,19 +132,26 @@ class RandomAccessProvider extends RandomAccess {
         storeName,
         options
       )
-      return (path, options) => volume.mount(path, options)
+      return (path: string, options?: FileOptions) =>
+        volume.mount(path, options)
     }
   }
   static async open(
     self: RandomAccessProvider,
     request: OpenRequest
   ): Promise<void> {
+    const { options } = self
     const mode = request.preferReadonly ? "readonly" : "readwrite"
     self.debug && console.log(`>> open ${self.url} ${mode}`)
 
     if (!self.file || (self.mode !== mode && mode === "readwrite")) {
       self.mode = mode
       self.file = await self.volume.open(self.url, mode)
+    }
+
+    if (!(mode === "readonly" || !options.truncate)) {
+      const file = self.activate()
+      await promise(file.truncate(options.size || 0))
     }
 
     self.debug && console.log(`<< open ${self.url} ${mode}`)
@@ -155,6 +169,9 @@ class RandomAccessProvider extends RandomAccess {
     const file = self.activate()
     file.location = offset
     const chunk = await promise(file.readAsArrayBuffer(size))
+    if (chunk.byteLength !== size) {
+      throw new Error("Could not satisfy length")
+    }
 
     Buffer.from(chunk).copy(buffer)
     self.debug &&
@@ -183,7 +200,7 @@ class RandomAccessProvider extends RandomAccess {
   ): Promise<void> {
     self.debug && console.log(`>> delete ${self.url} <${offset}, ${size}>`)
     const stat = await this.stat(self)
-    if (offset + size > stat.size) {
+    if (offset + size >= stat.size) {
       const file = self.activate()
       await promise(file.truncate(offset))
     }
@@ -287,7 +304,7 @@ class RandomAccessProvider extends RandomAccess {
   constructor(
     volume: RandomAccessIDBFileVolume,
     url: string,
-    options: MountOptions
+    options?: FileOptions = {}
   ) {
     super()
     this.volume = volume
@@ -301,7 +318,7 @@ class RandomAccessProvider extends RandomAccess {
     this.isIdle = true
     this.debug = !!volume.options.debug
   }
-  activate() {
+  activate(): IDBFileHandle {
     const { lockedFile, file, mode } = this
     if (lockedFile && lockedFile.active) {
       return lockedFile
@@ -326,3 +343,5 @@ const RequestType = {
   close: 5,
   destroy: 6
 }
+
+export default RandomAccessProvider
