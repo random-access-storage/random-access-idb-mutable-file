@@ -1,13 +1,10 @@
 [ignore]
-.*/node_modules/babel*
-.*/node_modules/tap/*
-.*/node_modules/documentation/*
-.*/node_modules/browserify*
-.*/node_modules/*
+<PROJECT_ROOT>/node_modules/.*
 
 [libs]
 
 [include]
+<PROJECT_ROOT>/node_modules/random-access-test/.*
 
 [options]
 module.name_mapper='random-access-idb-mutable-file' -> '<PROJECT_ROOT>/src/random-access-idb-mutable-file'

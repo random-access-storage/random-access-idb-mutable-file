@@ -12,13 +12,20 @@ module.exports = config =>
       transform: ["babelify"]
     },
     tapReporter: {
-      prettify: require("faucet"),
-      separator: "----------------------------------------"
+      // prettify: require("faucet"),
+      separator:
+        "\n\n\n\n\n\n\n----------------------------------------\n\n\n\n\n\n\n"
     },
     logLevel: config.LOG_ERROR,
+    captureConsole: true,
+    browserNoActivityTimeout: 90000,
     browserConsoleLogOptions: {
       level: "error",
       format: "%b %T: %m",
-      terminal: false
+      terminal: true
+    },
+    notifyReporter: {
+      reportEachFailure: true,
+      reportSuccess: true
     }
   })
