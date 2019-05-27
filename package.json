@@ -8,7 +8,7 @@
     "flow"
   ],
   "main": "lib/random-access-idb-mutable-file",
-  "module": "src/random-access-idb-mutable-file",
+  "module": "lib/random-access-idb-mutable-file",
   "unpkg": "dist/random-access-idb-mutable-file",
   "author": "Irakli Gozalishvili <rfobic@gmail.com> (http://jeditoolkit.com)",
   "repository": "https://github.com/Gozala/random-access-idb-mutable-file",
@@ -39,7 +39,7 @@
     "random-access-test": "https://github.com/Gozala/random-access-test.git",
     "rollup": "0.61.2",
     "rollup.config.flow": "1.1.0",
-    "watchify": "3.11.0"
+    "watchify": "^3.11.1"
   },
   "scripts": {
     "test": "npm run test:flow && npm run test:tape",
