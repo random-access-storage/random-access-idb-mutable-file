@@ -8,7 +8,6 @@
     "flow"
   ],
   "main": "lib/random-access-idb-mutable-file",
-  "module": "lib/random-access-idb-mutable-file",
   "unpkg": "dist/random-access-idb-mutable-file",
   "author": "Irakli Gozalishvili <rfobic@gmail.com> (http://jeditoolkit.com)",
   "repository": "https://github.com/Gozala/random-access-idb-mutable-file",
