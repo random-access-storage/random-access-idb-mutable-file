@@ -53,7 +53,6 @@
     "build:docs": "documentation build --document-exported src/** -f html --o docs",
     "build": "npm run build:node && npm run build:types",
     "prepublishOnly": "npm run build && npm run build:umd && npm test",
-    "install": "npm run build",
     "precommit": "lint-staged",
     "start": "flow-copy-source --watch --verbose src lib & babel --watch --out-dir lib src"
   },
