@@ -41,6 +41,7 @@
     "watchify": "^3.11.1"
   },
   "scripts": {
+    "pretest": "npm run build",
     "test": "npm run test:flow && npm run test:tape",
     "test:tape": "karma start --single-run",
     "test:watch": "karma start",
@@ -53,7 +54,6 @@
     "build:docs": "documentation build --document-exported src/** -f html --o docs",
     "build": "npm run build:node && npm run build:types",
     "prepublishOnly": "npm run build && npm run build:umd && npm test",
-    "install": "npm run build",
     "precommit": "lint-staged",
     "start": "flow-copy-source --watch --verbose src lib & babel --watch --out-dir lib src"
   },
