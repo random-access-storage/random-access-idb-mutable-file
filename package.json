@@ -41,6 +41,7 @@
     "watchify": "^3.11.1"
   },
   "scripts": {
+    "pretest": "npm run build",
     "test": "npm run test:flow && npm run test:tape",
     "test:tape": "karma start --single-run",
     "test:watch": "karma start",
