@@ -33,8 +33,8 @@ const main = async (filename, options) => {
 
     npm install random-access-idb-mutable-file
 
-[travis.icon]: https://travis-ci.org/Gozala/random-access-idb-mutable-file.svg?branch=master
-[travis.url]: https://travis-ci.org/Gozala/random-access-idb-mutable-file
+[travis.icon]: https://travis-ci.org/random-access-storage/random-access-idb-mutable-file.svg?branch=master
+[travis.url]: https://travis-ci.org/random-access-storage/random-access-idb-mutable-file
 [version.icon]: https://img.shields.io/npm/v/random-access-idb-mutable-file.svg
 [package.url]: https://npmjs.org/package/random-access-idb-mutable-file
 [downloads.icon]: https://img.shields.io/npm/dm/random-access-idb-mutable-file.svg
