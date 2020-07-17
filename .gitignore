@@ -5,3 +5,5 @@ dist
 !test/**/*.js
 !test/**/*.flow
 node_modules/
+yarn.lock
+package-lock.json
